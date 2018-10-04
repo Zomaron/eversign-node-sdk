@@ -11,6 +11,7 @@ var Signer = require('../lib/Signer');
 var Document = require('../lib/Document');
 var path = require('path');
 var config = require('../examples/config');
+var fs = require('fs');
 
 var key = config.accessKey;
 var businessId = config.businessId;
@@ -130,6 +131,30 @@ describe('Document' , function functionName() {
         .catch(function (error) {
           done(error)
         });
+  });
+
+describe('Client.downloadRawDocument()' , function functionName() {
+
+  this.timeout(5000); 
+
+  it("should donwload a file no problem", function (done) {
+    var client = new Client(key, businessId);
+    client.getDocumentByHash(config.documentHash)
+    .then(function (document) {
+
+      var stream = fs.createWriteStream('new.pdf');
+
+      client.downloadRawDocument(document, stream);
+
+      stream.on('finish', function () {
+        done();
+      });
+      stream.on('error', function (err) {
+        done(err);
+      });
+
+    })
+    .catch(done);
   });
 
 });
