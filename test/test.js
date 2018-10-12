@@ -144,7 +144,7 @@ describe('Client.downloadRawDocument()' , function functionName() {
 
       var stream = fs.createWriteStream('new.pdf');
 
-      client.downloadRawDocument(document, stream);
+      client.downloadDocument(document, stream);
 
       stream.on('finish', function () {
         done();
